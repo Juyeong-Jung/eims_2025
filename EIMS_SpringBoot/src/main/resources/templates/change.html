@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>社員情報登録確認</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+   <div class="container mt-5">
+        <h1 class="mb-4">社員情報変更</h1>
+        <p>変更内容を入力してください。</p>
+        <form th:action="@{/changeConfirm}" th:object="${employeeForm}" method="post" class="mt-3">
+            <table class="table">
+                <tr>
+                    <td>社員番号</td>
+                    <td><input type="text" th:field="*{empno}" class="form-control" readonly /></td>
+                </tr>
+                <tr>
+                    <td>氏</td>
+                    <td><input type="text" th:field="*{lname}" class="form-control" /></td>
+                    <td><div th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}" class="text-danger"></div></td>
+                </tr>
+                <tr>
+                    <td>名</td>
+                    <td><input type="text" th:field="*{fname}" class="form-control" /></td>
+                    <td><div th:if="${#fields.hasErrors('fname')}" th:errors="*{fname}" class="text-danger"></div></td>
+                </tr>
+                <tr>
+                    <td>氏（カナ）</td>
+                    <td><input type="text" th:field="*{lkana}" class="form-control" /></td>
+                    <td><div th:if="${#fields.hasErrors('lkana')}" th:errors="*{lkana}" class="text-danger"></div></td>
+                </tr>
+                <tr>
+                    <td>名（カナ）</td>
+                    <td><input type="text" th:field="*{fkana}" class="form-control" /></td>
+                    <td><div th:if="${#fields.hasErrors('fkana')}" th:errors="*{fkana}" class="text-danger"></div></td>
+                </tr>
+                <tr>
+                    <td>性別</td>
+                    <td>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{gender}" id="genderMale" value="1" />
+                            <label class="form-check-label" for="genderMale">男性</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" th:field="*{gender}" id="genderFemale" value="2" />
+                            <label class="form-check-label" for="genderFemale">女性</label>
+                        </div>
+                    </td>
+                    <td><div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="text-danger"></div></td>
+                </tr>
+                <tr>
+                    <td>部署名</td>
+                    <td>
+                        <select th:field="*{deptno}" class="form-control">
+                            <option value="" disabled selected>選択してください</option>
+                            <option value="100" th:selected="${deptno == 100}">人事部</option>
+                            <option value="200" th:selected="${deptno == 200}">経理部</option>
+                            <option value="300" th:selected="${deptno == 300}">営業部</option>
+                            <option value="400" th:selected="${deptno == 400}">企画部</option>
+                            <option value="500" th:selected="${deptno == 500}">開発部</option>
+                            <option value="600" th:selected="${deptno == 600}">総務部</option>
+                        </select>
+                    </td>
+                    <td><div th:if="${#fields.hasErrors('deptno')}" th:errors="*{department.deptno}" class="text-danger"></div></td>
+                </tr>
+                <tr>
+                    <td>パスワード</td>
+                    <td><input type="text" name = "password" class="form-control" /></td>
+                    <td><div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div></td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">変更</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back(-1)">取消</button>
+        </form>
+    </div>
+</body>
+</html>
