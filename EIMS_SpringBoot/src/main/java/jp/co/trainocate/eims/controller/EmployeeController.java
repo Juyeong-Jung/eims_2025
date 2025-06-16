@@ -62,6 +62,11 @@ public class EmployeeController {
         return "input";
     }
 
+    @PostMapping("/input")
+    public String handleInputPost(EmployeeForm employeeForm) {
+        return "input";
+    }
+
 
 
 	@PostMapping("/inputConfirm")
