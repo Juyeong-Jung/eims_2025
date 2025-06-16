@@ -27,10 +27,10 @@ public class EmployeeController {
 		return "index";
 	}
 
-	@GetMapping("/search")
-	public String showSearchPage() {
-		return "search";
-	}
+       @GetMapping("/search")
+       public String showSearchPage() {
+               return "search";
+       }
 
 	@GetMapping("/selectByEmpNo")
 	public String selectByEmpNo(Integer empno, Model model) {
@@ -56,10 +56,10 @@ public class EmployeeController {
 		return "search_result";
 	}
 
-	@GetMapping("/input")
-	public String showInputPage(EmployeeForm employeeForm) {
-		return "input";
-	}
+       @GetMapping("/input")
+       public String showInputPage(EmployeeForm employeeForm) {
+               return "input";
+       }
 
 	@PostMapping("/inputConfirm")
 	public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
@@ -78,8 +78,8 @@ public class EmployeeController {
 		return "input_complete";
 	}
 
-	@GetMapping("/deleteConfirm/{empno}")
-	public String deleteConfirm(@PathVariable("empno") Integer empno, Model model) {
+       @GetMapping("/deleteConfirm/{empno}")
+       public String deleteConfirm(@PathVariable("empno") Integer empno, Model model) {
 		Employee employee = employeeService.findByEmployee(empno);
 		model.addAttribute("employee", employee);
 		return "delete_confirm";
@@ -91,8 +91,8 @@ public class EmployeeController {
 		return "delete_complete";
 	}
 
-	@GetMapping("/changeInput/{empno}")
-	public String changeInput(@PathVariable("empno") int empno, EmployeeForm employeeForm, Model model) {
+       @GetMapping("/changeInput/{empno}")
+       public String changeInput(@PathVariable("empno") int empno, EmployeeForm employeeForm, Model model) {
 		employeeForm = employeeService.findByEmpNoAndCopyToEmployeeForm(empno, employeeForm);
 		return "change";
 	}
