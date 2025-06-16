@@ -66,7 +66,7 @@
                 <tr>
                     <td>パスワード</td>
                     <td><input type="text" name = "password" class="form-control" /></td>
-                    <td><div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div></td>
+                    <td><div th:errors="*{password}" class="text-danger"></div></td>
                 </tr>
             </table>
             <button type="submit" class="btn btn-primary">変更</button>
