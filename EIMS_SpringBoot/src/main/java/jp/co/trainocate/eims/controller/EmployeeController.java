@@ -56,10 +56,13 @@ public class EmployeeController {
 		return "search_result";
 	}
 
-       @GetMapping("/input")
-       public String showInputPage(EmployeeForm employeeForm) {
-               return "input";
-       }
+
+    @GetMapping("/input")
+    public String showInputPage(EmployeeForm employeeForm) {
+        return "input";
+    }
+
+
 
 	@PostMapping("/inputConfirm")
 	public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
