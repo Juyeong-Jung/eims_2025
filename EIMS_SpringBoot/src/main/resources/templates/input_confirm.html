@@ -50,7 +50,6 @@
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary">登録確定</button>
 
-                    <button type="submit" class="btn btn-secondary" th:formaction="@{/input}" formmethod="get">修正</button>
                     <button type="button" class="btn btn-danger" onclick="location.href='/input'">取消</button>
 
                 </div>
@@ -62,6 +61,20 @@
             <input type="hidden" th:field="*{gender}" />
             <input type="hidden" th:field="*{deptno}" />
             <input type="hidden" th:field="*{password}" />
+        </form>
+        <form th:action="@{/input}" th:object="${employeeForm}" method="post" class="mt-2">
+            <input type="hidden" th:field="*{lname}" />
+            <input type="hidden" th:field="*{fname}" />
+            <input type="hidden" th:field="*{lkana}" />
+            <input type="hidden" th:field="*{fkana}" />
+            <input type="hidden" th:field="*{gender}" />
+            <input type="hidden" th:field="*{deptno}" />
+            <input type="hidden" th:field="*{password}" />
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-secondary">修正</button>
+                </div>
+            </div>
         </form>
         <form th:action="@{/input}" method="get" class="mt-2">
             <div class="form-group row">
