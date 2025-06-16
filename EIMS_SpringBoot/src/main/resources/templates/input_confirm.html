@@ -62,7 +62,7 @@
             <input type="hidden" th:field="*{deptno}" />
             <input type="hidden" th:field="*{password}" />
         </form>
-        <form th:action="@{/input}" method="post" class="mt-2">
+        <form th:action="@{/input}" th:object="${employeeForm}" method="post" class="mt-2">
             <input type="hidden" th:field="*{lname}" />
             <input type="hidden" th:field="*{fname}" />
             <input type="hidden" th:field="*{lkana}" />
