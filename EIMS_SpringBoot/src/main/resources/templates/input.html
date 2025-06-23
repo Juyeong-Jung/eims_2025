@@ -13,22 +13,22 @@
                 <tr>
                     <td>氏</td>
                     <td><input type="text" th:field="*{lname}" class="form-control" /></td>
-                    <td><div th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}" class="text-danger"></div></td>
+                    <td><div th:errors="*{lname}" class="text-danger"></div></td>
                 </tr>
                 <tr>
                     <td>名</td>
                     <td><input type="text" th:field="*{fname}" class="form-control" /></td>
-                    <td><div th:if="${#fields.hasErrors('fname')}" th:errors="*{fname}" class="text-danger"></div></td>
+                    <td><div th:errors="*{fname}" class="text-danger"></div></td>
                 </tr>
                 <tr>
                     <td>氏（カナ）</td>
                     <td><input type="text" th:field="*{lkana}" class="form-control" /></td>
-                    <td><div th:if="${#fields.hasErrors('lkana')}" th:errors="*{lkana}" class="text-danger"></div></td>
+                    <td><div th:errors="*{lkana}" class="text-danger"></div></td>
                 </tr>
                 <tr>
                     <td>名（カナ）</td>
                     <td><input type="text" th:field="*{fkana}" class="form-control" /></td>
-                    <td><div th:if="${#fields.hasErrors('fkana')}" th:errors="*{fkana}" class="text-danger"></div></td>
+                    <td><div th:errors="*{fkana}" class="text-danger"></div></td>
                 </tr>
                  <tr>
                     <td>性別</td>
@@ -42,7 +42,7 @@
                             <label class="form-check-label" for="genderFemale">女性</label>
                         </div>
                     </td>
-                    <td><div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="text-danger"></div></td>
+                    <td><div th:errors="*{gender}" class="text-danger"></div></td>
                 </tr>
                 <tr>
                     <td>部署名</td>
@@ -55,12 +55,12 @@
                             </option>
                         </select>
                     </td>
-                    <td><div th:if="${#fields.hasErrors('deptno')}" th:errors="*{deptno}" class="text-danger"></div></td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>パスワード</td>
                     <td><input type="password" th:field="*{password}" class="form-control" /></td>
-                    <td><div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div></td>
+                    <td><div th:errors="*{password}" class="text-danger"></div></td>
                 </tr>
             </table>
             <div class="form-group row">
@@ -70,9 +70,6 @@
                 </div>
             </div>
         </form>
-        <div th:if="${param.success}" class="mt-3">
-            <p class="text-success">社員が正常に登録されました！</p>
-        </div>
     </div>
 </body>
 </html>

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
 import jp.co.trainocate.eims.entity.Employee;
 import jp.co.trainocate.eims.form.EmployeeForm;
-import jp.co.trainocate.eims.service.EmployeeService;
 import jp.co.trainocate.eims.service.DepartmentService;
+import jp.co.trainocate.eims.service.EmployeeService;
 
 @Controller
 public class EmployeeController {
@@ -61,11 +61,19 @@ public class EmployeeController {
 		return "search_result";
 	}
 
+
     @GetMapping("/input")
     public String showInputPage(EmployeeForm employeeForm, Model model) {
             model.addAttribute("departments", departmentService.findAll());
             return "input";
     }
+
+
+    @PostMapping("/input")
+    public String handleInputPost(EmployeeForm employeeForm) {
+        return "input";
+    }
+
 
 	@PostMapping("/inputConfirm")
 	public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
@@ -84,8 +92,8 @@ public class EmployeeController {
 		return "input_complete";
 	}
 
-	@GetMapping("/deleteConfirm/{empno}")
-	public String deleteConfirm(@PathVariable("empno") Integer empno, Model model) {
+       @GetMapping("/deleteConfirm/{empno}")
+       public String deleteConfirm(@PathVariable("empno") Integer empno, Model model) {
 		Employee employee = employeeService.findByEmployee(empno);
 		model.addAttribute("employee", employee);
 		return "delete_confirm";
