@@ -6,4 +6,6 @@ import jp.co.trainocate.eims.entity.Department;
 
 public interface DepartmentService {
     List<Department> findAll();
+
+    Department findById(Integer deptno);
 }
