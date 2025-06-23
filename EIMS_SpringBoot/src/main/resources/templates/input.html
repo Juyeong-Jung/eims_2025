@@ -49,12 +49,10 @@
                     <td>
                         <select th:field="*{deptno}" class="form-control">
                             <option value="" disabled selected>選択してください</option>
-                            <option value="100">人事部</option>
-                            <option value="200">経理部</option>
-                            <option value="300">営業部</option>
-                            <option value="400">企画部</option>
-                            <option value="500">開発部</option>
-                            <option value="600">総務部</option>
+                            <option th:each="dept : ${departments}"
+                                    th:value="${dept.deptno}"
+                                    th:text="${dept.deptname}">
+                            </option>
                         </select>
                     </td>
                     <td><div th:if="${#fields.hasErrors('deptno')}" th:errors="*{deptno}" class="text-danger"></div></td>
