@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" th:if="${employeeForm}">
         <h1 class="mt-5">社員情報変更完了</h1>
           <p>以下の社員情報を更新しました。</p>
         <form th:object="${employeeForm}" class="mt-3">

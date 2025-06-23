@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" th:if="${employeeForm}">
         <h1 class="mt-5">社員情報登録</h1>
         <p>登録する社員の情報を入力してください。</p>
         <!-- 入力内容を確認画面へ送信 -->
@@ -58,10 +58,12 @@
                         <select th:field="*{deptno}" class="form-control">
                             <option value="" disabled selected>選択してください</option>
                             <!-- 部署一覧を動的に表示 -->
-                            <option th:each="dept : ${departments}"
-                                    th:value="${dept.deptno}"
-                                    th:text="${dept.deptname}">
-                            </option>
+                            <th:block th:if="${departments}">
+                                <option th:each="dept : ${departments}"
+                                        th:value="${dept.deptno}"
+                                        th:text="${dept.deptname}">
+                                </option>
+                            </th:block>
                         </select>
                     </td>
                     <td></td>

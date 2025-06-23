@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" th:if="${employeeForm}">
         <h1 class="mt-5">社員情報登録確認</h1>
         <p>以下の内容で社員情報を登録しますか？</p>
         <!-- 確定ボタンで登録処理を行う -->
