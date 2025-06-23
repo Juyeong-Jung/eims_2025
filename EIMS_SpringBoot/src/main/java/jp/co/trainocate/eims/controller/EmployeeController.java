@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
 import jp.co.trainocate.eims.entity.Employee;
 import jp.co.trainocate.eims.form.EmployeeForm;
+import jp.co.trainocate.eims.service.DepartmentService;
 import jp.co.trainocate.eims.service.EmployeeService;
 
 @Controller
@@ -22,13 +23,17 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
+	@Autowired
+	private DepartmentService departmentService;
+
 	@GetMapping("/index")
 	public String index() {
 		return "index";
 	}
 
 	@GetMapping("/search")
-	public String showSearchPage() {
+	public String showSearchPage(Model model) {
+		model.addAttribute("departments", departmentService.findAll());
 		return "search";
 	}
 
@@ -57,13 +62,20 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/input")
-	public String showInputPage(EmployeeForm employeeForm) {
+	public String showInputPage(EmployeeForm employeeForm, Model model) {
+		model.addAttribute("departments", departmentService.findAll());
+		return "input";
+	}
+
+	@PostMapping("/input")
+	public String handleInputPost(EmployeeForm employeeForm) {
 		return "input";
 	}
 
 	@PostMapping("/inputConfirm")
 	public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("departments", departmentService.findAll());
 			return "input";
 		}
 		model.addAttribute("employeeForm", employeeForm);
@@ -94,12 +106,14 @@ public class EmployeeController {
 	@GetMapping("/changeInput/{empno}")
 	public String changeInput(@PathVariable("empno") int empno, EmployeeForm employeeForm, Model model) {
 		employeeForm = employeeService.findByEmpNoAndCopyToEmployeeForm(empno, employeeForm);
+		model.addAttribute("departments", departmentService.findAll());
 		return "change";
 	}
 
 	@PostMapping("/changeConfirm")
 	public String changeConfirm(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("departments", departmentService.findAll());
 			return "change";
 		}
 		model.addAttribute("employeeForm", employeeForm);

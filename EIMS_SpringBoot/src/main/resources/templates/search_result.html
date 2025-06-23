@@ -37,16 +37,14 @@
 								<span th:text="'（' + ${employee.lkana} + ' ' + ${employee.fkana} + '）'"></span>
 							</td>
 							<td th:text="${employee.department.deptname}"></td>
-							<td>
+							<td class="text-center">
 								<div class="btn-group" role="group">
-									<form th:action="@{/changeInput/}+ ${employee.empno}" method="get"
-										style="display:inline;">
-										<button type="submit" class="btn btn-primary">変更</button>
-									</form>
-									<form th:action="@{/deleteConfirm/}+ ${employee.empno}" method="get"
-										style="display:inline;">
-										<button type="submit" class="btn btn-danger">削除</button>
-									</form>
+                                <form th:action="@{/changeInput/}+ ${employee.empno}" method="get" style="display:inline;">
+                                	<button type="submit" class="btn btn-primary">変更</button>
+                                </form>
+                                <form th:action="@{/deleteConfirm/}+ ${employee.empno}" method="get" style="display:inline;">
+									<button type="submit" class="btn btn-danger">削除</button>
+                                </form>
 								</div>
 							</td>
 						</tr>

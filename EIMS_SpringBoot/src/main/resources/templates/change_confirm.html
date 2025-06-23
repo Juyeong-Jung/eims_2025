@@ -54,7 +54,6 @@
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary">変更確定</button>
                     <button type="button" class="btn btn-secondary" onclick="history.back()">修正</button>
-                    <button type="button" class="btn btn-danger" onclick="location.href='/search'">取消</button>
                 </div>
             </div>
             <input type="hidden" th:field="*{empno}" />
@@ -65,6 +64,13 @@
             <input type="hidden" th:field="*{gender}" />
             <input type="hidden" th:field="*{deptno}" />
             <input type="hidden" th:field="*{password}" />
+        </form>
+        <form th:action="@{/search}" method="get" class="mt-2">
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-danger">取消</button>
+                </div>
+            </div>
         </form>
     </div>
 </body>
