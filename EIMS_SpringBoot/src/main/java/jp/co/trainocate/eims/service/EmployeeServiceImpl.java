@@ -38,10 +38,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeRepository.findByDepartmentDeptno(deptno);
 	}
 
-	@Override
-	public Employee saveEmployee(Employee employee) {
-		return employeeRepository.save(employee);
-	}
+    @Override
+    public Employee saveEmployee(Employee employee) {
+        if (employee.getEmpno() == null) {
+            Integer nextId = employeeRepository.findTopByOrderByEmpnoDesc()
+                    .map(Employee::getEmpno)
+                    .map(id -> id + 1)
+                    .orElse(1);
+            employee.setEmpno(nextId);
+        }
+        return employeeRepository.save(employee);
+    }
 
 	@Override
 	public Employee findByEmployee(int empno) {

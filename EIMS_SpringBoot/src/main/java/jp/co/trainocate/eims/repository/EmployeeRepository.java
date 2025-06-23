@@ -1,6 +1,7 @@
 package jp.co.trainocate.eims.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 		List<Employee> findByLnameLikeOrFnameLikeOrLkanaLikeOrFkanaLike(String lname, String fname, String lkana,
 				String fkana);*/
 
-	List<Employee> findByDepartmentDeptno(Integer deptno);
+    List<Employee> findByDepartmentDeptno(Integer deptno);
+
+    Optional<Employee> findTopByOrderByEmpnoDesc();
 }
