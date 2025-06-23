@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!--
+  社員情報を検索する画面。
+  社員番号、氏名、部署名の3種類で検索できます。
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -15,8 +19,10 @@
 
         <div class="mb-3">
             <h4>社員番号検索</h4>
+            <!-- 社員番号を直接指定して検索 -->
             <form th:action="@{/selectByEmpNo}" method="get" class="form-inline">
                 <div class="form-group mr-2">
+                    <!-- 数値のみ入力可能 -->
                     <input type="number" name="empno" class="form-control" placeholder="社員番号">
                 </div>
                 <button type="submit" class="btn btn-primary">検索</button>
@@ -25,6 +31,7 @@
 
         <div class="mb-4">
             <h4>社員名検索</h4>
+            <!-- 姓・名のどちらかを部分一致で検索 -->
             <form th:action="@{/selectByEmpName}" method="get" class="form-inline">
                 <div class="form-group mr-2">
                     <input type="text" name="keyword" class="form-control" placeholder="社員名">
@@ -35,9 +42,11 @@
 
         <div class="mb-4">
             <h4>部署名検索</h4>
+            <!-- 部署プルダウンから選択して検索 -->
             <form th:action="@{/selectByDeptNo}" method="get" class="form-inline">
                 <div class="form-group mr-2">
                     <select name="deptno" class="form-control">
+                        <!-- 部署一覧はコントローラで取得してモデルに登録 -->
                         <option th:each="dept : ${departments}"
                                 th:value="${dept.deptno}"
                                 th:text="${dept.deptname}">

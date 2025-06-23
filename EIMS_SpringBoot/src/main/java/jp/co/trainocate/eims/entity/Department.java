@@ -1,5 +1,9 @@
 package jp.co.trainocate.eims.entity;
 
+/**
+ * 部署エンティティ。
+ */
+
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -15,13 +19,17 @@ import lombok.Data;
 @Data
 @Table(name = "department")
 public class Department {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer deptno;
+    // 主キーの部署番号。自動採番を使用
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /** 部署番号 */
+    private Integer deptno;
 	
-	@Column(length = 10, nullable = false)
-	private String deptname;
+    /** 部署名 */
+    @Column(length = 10, nullable = false)
+    private String deptname;
 	
-	@OneToMany(mappedBy = "department")
+    /** 部署に所属する社員一覧 */
+    @OneToMany(mappedBy = "department")
     private List<Employee> employees;
 }
