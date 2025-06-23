@@ -1,5 +1,9 @@
 package jp.co.trainocate.eims.entity;
 
+/**
+ * 従業員エンティティ。
+ */
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,33 +18,43 @@ import lombok.Data;
 @Data
 @Table(name = "employee")
 public class Employee {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer empno;
+    // 主キーに自動採番を使用
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /** 社員番号 */
+    private Integer empno;
 	
-	@Column(length = 20, nullable = false)
-	private String lname;
+    /** 氏 */
+    @Column(length = 20, nullable = false)
+    private String lname;
 	
-	@Column(length = 20, nullable = false)
-	private String fname;
+    /** 名 */
+    @Column(length = 20, nullable = false)
+    private String fname;
 	
-	@Column(length = 50, nullable = false)
-	private String lkana;
+    /** 氏(カナ) */
+    @Column(length = 50, nullable = false)
+    private String lkana;
 	
-	@Column(length = 50, nullable = false)
-	private String fkana;
+    /** 名(カナ) */
+    @Column(length = 50, nullable = false)
+    private String fkana;
 	
-	@Column(length = 8, nullable = false)
-	private String password;
+    /** パスワード */
+    @Column(length = 8, nullable = false)
+    private String password;
 	
-	@Column(nullable = false)
-	private Integer gender;
+    /** 性別 1:男性 2:女性 */
+    @Column(nullable = false)
+    private Integer gender;
 	
-	@Column(name="deptno")
-	private Integer deptno;
+    /** 部署番号 (外部キー) */
+    @Column(name="deptno")
+    private Integer deptno;
 	
-	@ManyToOne
-	@JoinColumn(name = "deptno", referencedColumnName = "deptno", insertable = false, updatable = false)
+    /** 所属部署 */
+    @ManyToOne
+    @JoinColumn(name = "deptno", referencedColumnName = "deptno", insertable = false, updatable = false)
     private Department department;
 	
 }

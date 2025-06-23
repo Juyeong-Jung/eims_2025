@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!--
+  新規社員を登録するための入力画面。
+  入力した内容は次の確認画面に送られます。
+-->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>社員情報登録</title>
@@ -8,6 +12,7 @@
     <div class="container">
         <h1 class="mt-5">社員情報登録</h1>
         <p>登録する社員の情報を入力してください。</p>
+        <!-- 入力内容を確認画面へ送信 -->
         <form th:action="@{/inputConfirm}" th:object="${employeeForm}" method="post" class="mt-3">
             <table class="table">
                 <tr>
@@ -34,10 +39,12 @@
                     <td>性別</td>
                     <td>
                         <div class="form-check form-check-inline">
+                            <!-- 男性を選択 -->
                             <input class="form-check-input" type="radio" th:field="*{gender}" id="genderMale" value="1" />
                             <label class="form-check-label" for="genderMale">男性</label>
                         </div>
                         <div class="form-check form-check-inline">
+                            <!-- 女性を選択 -->
                             <input class="form-check-input" type="radio" th:field="*{gender}" id="genderFemale" value="2" />
                             <label class="form-check-label" for="genderFemale">女性</label>
                         </div>
@@ -47,8 +54,10 @@
                 <tr>
                     <td>部署名</td>
                     <td>
+                        <!-- 部署をプルダウンで選択 -->
                         <select th:field="*{deptno}" class="form-control">
                             <option value="" disabled selected>選択してください</option>
+                            <!-- 部署一覧を動的に表示 -->
                             <option th:each="dept : ${departments}"
                                     th:value="${dept.deptno}"
                                     th:text="${dept.deptname}">
