@@ -20,22 +20,22 @@ import jp.co.trainocate.eims.service.EmployeeService;
 @Controller
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
+	@Autowired
+	private EmployeeService employeeService;
 
-    @Autowired
-    private DepartmentService departmentService;
+	@Autowired
+	private DepartmentService departmentService;
 
 	@GetMapping("/index")
 	public String index() {
 		return "index";
 	}
 
-    @GetMapping("/search")
-    public String showSearchPage(Model model) {
-            model.addAttribute("departments", departmentService.findAll());
-            return "search";
-    }
+	@GetMapping("/search")
+	public String showSearchPage(Model model) {
+		model.addAttribute("departments", departmentService.findAll());
+		return "search";
+	}
 
 	@GetMapping("/selectByEmpNo")
 	public String selectByEmpNo(Integer empno, Model model) {
@@ -61,23 +61,21 @@ public class EmployeeController {
 		return "search_result";
 	}
 
+	@GetMapping("/input")
+	public String showInputPage(EmployeeForm employeeForm, Model model) {
+		model.addAttribute("departments", departmentService.findAll());
+		return "input";
+	}
 
-    @GetMapping("/input")
-    public String showInputPage(EmployeeForm employeeForm, Model model) {
-            model.addAttribute("departments", departmentService.findAll());
-            return "input";
-    }
-
-
-    @PostMapping("/input")
-    public String handleInputPost(EmployeeForm employeeForm) {
-        return "input";
-    }
-
+	@PostMapping("/input")
+	public String handleInputPost(EmployeeForm employeeForm) {
+		return "input";
+	}
 
 	@PostMapping("/inputConfirm")
 	public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("departments", departmentService.findAll());
 			return "input";
 		}
 		model.addAttribute("employeeForm", employeeForm);
@@ -92,8 +90,8 @@ public class EmployeeController {
 		return "input_complete";
 	}
 
-       @GetMapping("/deleteConfirm/{empno}")
-       public String deleteConfirm(@PathVariable("empno") Integer empno, Model model) {
+	@GetMapping("/deleteConfirm/{empno}")
+	public String deleteConfirm(@PathVariable("empno") Integer empno, Model model) {
 		Employee employee = employeeService.findByEmployee(empno);
 		model.addAttribute("employee", employee);
 		return "delete_confirm";
@@ -105,16 +103,17 @@ public class EmployeeController {
 		return "delete_complete";
 	}
 
-    @GetMapping("/changeInput/{empno}")
-    public String changeInput(@PathVariable("empno") int empno, EmployeeForm employeeForm, Model model) {
-            employeeForm = employeeService.findByEmpNoAndCopyToEmployeeForm(empno, employeeForm);
-            model.addAttribute("departments", departmentService.findAll());
-            return "change";
-    }
+	@GetMapping("/changeInput/{empno}")
+	public String changeInput(@PathVariable("empno") int empno, EmployeeForm employeeForm, Model model) {
+		employeeForm = employeeService.findByEmpNoAndCopyToEmployeeForm(empno, employeeForm);
+		model.addAttribute("departments", departmentService.findAll());
+		return "change";
+	}
 
 	@PostMapping("/changeConfirm")
 	public String changeConfirm(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("departments", departmentService.findAll());
 			return "change";
 		}
 		model.addAttribute("employeeForm", employeeForm);
