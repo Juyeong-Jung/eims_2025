@@ -47,10 +47,12 @@
                 <div class="form-group mr-2">
                     <select name="deptno" class="form-control">
                         <!-- 部署一覧はコントローラで取得してモデルに登録 -->
-                        <option th:each="dept : ${departments}"
-                                th:value="${dept.deptno}"
-                                th:text="${dept.deptname}">
-                        </option>
+                        <th:block th:if="${departments}">
+                            <option th:each="dept : ${departments}"
+                                    th:value="${dept.deptno}"
+                                    th:text="${dept.deptname}">
+                            </option>
+                        </th:block>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">検索</button>
