@@ -42,13 +42,7 @@
                 <tr>
                     <td>部署名</td>
                     <td>
-                        <!-- 部署番号から部署名を表示（ここでは簡易に条件分岐で対応） -->
-                        <p th:text="*{deptno == 100 ? '人事部' :
-                                      deptno == 200 ? '経理部' :
-                                      deptno == 300 ? '営業部' :
-                                      deptno == 400 ? '企画部' :
-                                      deptno == 500 ? '開発部' :
-                                      deptno == 600 ? '総務部' : '未選択'}"></p>
+                        <p th:text="${department != null} ? ${department.deptname} : '未選択'"></p>
                     </td>
                 </tr>
                 

@@ -109,12 +109,13 @@ public class EmployeeController {
 
     /** 新規社員を登録する */
     @PostMapping("/saveEmployee")
-    public String saveEmployee(EmployeeForm employeeForm, ModelMapper modelMapper) {
+    public String saveEmployee(EmployeeForm employeeForm, ModelMapper modelMapper, Model model) {
                 // 画面から受け取ったフォームオブジェクトをエンティティへ変換
                 Employee employee = modelMapper.map(employeeForm, Employee.class);
                 // DB へ保存し、採番された社員番号を取得
                 employee = employeeService.saveEmployee(employee);
                 employeeForm.setEmpno(employee.getEmpno());
+                model.addAttribute("department", departmentService.findById(employeeForm.getDeptno()));
                 // 完了画面へ遷移
                 return "input_complete";
         }
@@ -133,6 +134,7 @@ public class EmployeeController {
     public String deleteEmployee(EmployeeForm employeeForm, Model model) {
                 // サービス層で削除処理を実行
                 employeeService.deleteEmployeeById(employeeForm.getEmpno());
+                model.addAttribute("department", departmentService.findById(employeeForm.getDeptno()));
                 return "delete_complete";
         }
 
@@ -162,10 +164,11 @@ public class EmployeeController {
 
     /** 社員情報を更新する */
     @PostMapping("/changeEmployee")
-    public String changeEmployee(EmployeeForm employeeForm, ModelMapper modelMapper) {
+    public String changeEmployee(EmployeeForm employeeForm, ModelMapper modelMapper, Model model) {
                 // 入力された内容でエンティティを生成し保存
                 Employee employee = modelMapper.map(employeeForm, Employee.class);
                 employee = employeeService.saveEmployee(employee);
+                model.addAttribute("department", departmentService.findById(employeeForm.getDeptno()));
                 // 更新完了後は完了画面へ
                 return "change_complete";
         }
