@@ -72,15 +72,16 @@ public class EmployeeController {
 		return "input";
 	}
 
-	@PostMapping("/inputConfirm")
-	public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("departments", departmentService.findAll());
-			return "input";
-		}
-		model.addAttribute("employeeForm", employeeForm);
-		return "input_confirm";
-	}
+        @PostMapping("/inputConfirm")
+        public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
+                if (bindingResult.hasErrors()) {
+                        model.addAttribute("departments", departmentService.findAll());
+                        return "input";
+                }
+                model.addAttribute("employeeForm", employeeForm);
+                model.addAttribute("department", departmentService.findById(employeeForm.getDeptno()));
+                return "input_confirm";
+        }
 
 	@PostMapping("/saveEmployee")
 	public String saveEmployee(EmployeeForm employeeForm, ModelMapper modelMapper) {
@@ -110,15 +111,16 @@ public class EmployeeController {
 		return "change";
 	}
 
-	@PostMapping("/changeConfirm")
-	public String changeConfirm(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("departments", departmentService.findAll());
-			return "change";
-		}
-		model.addAttribute("employeeForm", employeeForm);
-		return "change_confirm";
-	}
+        @PostMapping("/changeConfirm")
+        public String changeConfirm(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
+                if (bindingResult.hasErrors()) {
+                        model.addAttribute("departments", departmentService.findAll());
+                        return "change";
+                }
+                model.addAttribute("employeeForm", employeeForm);
+                model.addAttribute("department", departmentService.findById(employeeForm.getDeptno()));
+                return "change_confirm";
+        }
 
 	@PostMapping("/changeEmployee")
 	public String changeEmployee(EmployeeForm employeeForm, ModelMapper modelMapper) {
