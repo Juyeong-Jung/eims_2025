@@ -78,8 +78,10 @@
                     <td><div th:errors="*{password}" class="text-danger"></div></td>
                 </tr>
             </table>
+            <div class="text-center mb-5">
             <button type="submit" class="btn btn-primary">変更</button>
-            <button type="button" class="btn btn-secondary" onclick="history.back(-1)">取消</button>
+            <a th:href="@{/search}" class="btn btn-secondary">取消</a>
+            </div>
         </form>
     </div>
 </body>

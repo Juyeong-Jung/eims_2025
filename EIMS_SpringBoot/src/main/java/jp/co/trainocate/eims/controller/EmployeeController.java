@@ -126,6 +126,7 @@ public class EmployeeController {
                 // 削除対象の従業員を取得し確認画面で表示
                 Employee employee = employeeService.findByEmployee(empno);
                 model.addAttribute("employee", employee);
+                model.addAttribute("department", departmentService.findById(employee.getDeptno()));
                 return "delete_confirm";
         }
 
