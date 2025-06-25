@@ -46,10 +46,9 @@
                     <td><p th:text="*{'●'.repeat(password.length)}"></p></td>
                 </tr>
             </table>
-            <div class="form-group row">
-                <div class="col-sm-10 offset-sm-2">
-                    <button type="submit" class="btn btn-primary">登録確定</button>
-                </div>
+           	<div class = "text-center mb-5">
+            	<button type="submit" class="btn btn-primary">登録確定</button> 
+            	<a th:href="@{/input}" class="btn btn-danger">取消</a>
             </div>
             <!-- 確認画面ではフォーム値が失われないよう hidden に保持 -->
             <input type="hidden" th:field="*{lname}" />
@@ -60,13 +59,7 @@
             <input type="hidden" th:field="*{deptno}" />
             <input type="hidden" th:field="*{password}" />
         </form>
-        <form th:action="@{/input}" method="get" class="mt-2">
-            <div class="form-group row">
-                <div class="col-sm-10 offset-sm-2">
-                    <button type="submit" class="btn btn-danger">取消</button>
-                </div>
-            </div>
-        </form>
+       
     </div>
 </body>
 </html>

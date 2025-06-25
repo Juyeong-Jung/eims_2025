@@ -72,11 +72,9 @@
                     <td><div th:errors="*{password}" class="text-danger"></div></td>
                 </tr>
             </table>
-            <div class="form-group row">
-                <div class="col-sm-10 offset-sm-2">
-                    <button type="submit" class="btn btn-primary">登録</button>
-                    <button type="button" class="btn btn-secondary" onclick="location.href='/'">トップページに戻る</button>
-                </div>
+            <div class = "text-center mb-5">
+            	<button type="submit" class="btn btn-primary">登録</button> 
+            	<a th:href="@{/}" class="btn btn-secondary">トップページに戻る</a>
             </div>
         </form>
     </div>
