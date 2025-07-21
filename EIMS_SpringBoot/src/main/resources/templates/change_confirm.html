@@ -37,12 +37,7 @@
                 <tr>
                     <td>部署名</td>
                     <td>
-                        <p th:text="*{deptno == 100 ? '人事部' :
-                                      deptno == 200 ? '経理部' :
-                                      deptno == 300 ? '営業部' :
-                                      deptno == 400 ? '企画部' :
-                                      deptno == 500 ? '開発部' : 
-                                      deptno == 600 ? '総務部' : '未選択'}"></p>
+                        <p th:text="${department != null} ? ${department.deptname} : '未選択'"></p>
                     </td>
                 </tr>
                 <tr>
@@ -53,7 +48,6 @@
             <div class="form-group row">
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary">変更確定</button>
-                    <button type="button" class="btn btn-secondary" onclick="history.back()">修正</button>
                 </div>
             </div>
             <input type="hidden" th:field="*{empno}" />

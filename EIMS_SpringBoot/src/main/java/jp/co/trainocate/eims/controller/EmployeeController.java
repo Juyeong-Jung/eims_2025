@@ -67,18 +67,13 @@ public class EmployeeController {
 		return "input";
 	}
 
-	@PostMapping("/input")
-	public String handleInputPost(EmployeeForm employeeForm) {
-		return "input";
-	}
-
 	@PostMapping("/inputConfirm")
 	public String confirmRegistration(@Valid EmployeeForm employeeForm, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("departments", departmentService.findAll());
 			return "input";
 		}
-		model.addAttribute("employeeForm", employeeForm);
+		model.addAttribute("department", departmentService.findById(employeeForm.getDeptno()));
 		return "input_confirm";
 	}
 
@@ -116,7 +111,7 @@ public class EmployeeController {
 			model.addAttribute("departments", departmentService.findAll());
 			return "change";
 		}
-		model.addAttribute("employeeForm", employeeForm);
+		model.addAttribute("department", departmentService.findById(employeeForm.getDeptno()));
 		return "change_confirm";
 	}
 

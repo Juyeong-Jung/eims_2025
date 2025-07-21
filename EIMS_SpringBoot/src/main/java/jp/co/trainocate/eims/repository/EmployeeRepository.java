@@ -23,5 +23,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 		List<Employee> findByLnameLikeOrFnameLikeOrLkanaLikeOrFkanaLike(String lname, String fname, String lkana,
 				String fkana);*/
 
-	List<Employee> findByDepartmentDeptno(Integer deptno);
+    List<Employee> findByDepartmentDeptno(Integer deptno);
 }
