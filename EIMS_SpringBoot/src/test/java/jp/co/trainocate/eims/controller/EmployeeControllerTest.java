@@ -1,295 +1,365 @@
 package jp.co.trainocate.eims.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import jp.co.trainocate.eims.entity.Department;
 import jp.co.trainocate.eims.entity.Employee;
-import jp.co.trainocate.eims.form.EmployeeForm;
 import jp.co.trainocate.eims.service.DepartmentService;
 import jp.co.trainocate.eims.service.EmployeeService;
 
 @WebMvcTest(EmployeeController.class)
+@ActiveProfiles("test")
 class EmployeeControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockBean
-    private EmployeeService employeeService;
+	@MockBean
+	private EmployeeService employeeService;
 
-    @MockBean
-    private DepartmentService departmentService;
+	@MockBean
+	private DepartmentService departmentService;
 
-    @MockBean
-    private ModelMapper modelMapper;
+	// --- 共通テストデータ（3件ずつ） ---
+	//(Controllerテストでも、メソッドの数が多い場合は、@BeforeEachのテストデータを使うと便利です)
+	private List<Department> deptList;
+	private List<Employee> empList;
 
-    private Department createDepartment(int deptno, String name) {
-        Department dept = new Department();
-        dept.setDeptno(deptno);
-        dept.setDeptname(name);
-        return dept;
-    }
+	@BeforeEach
+	void setUp() {
+		deptList = List.of(
+				new Department(100, "人事部"),
+				new Department(200, "経理部"),
+				new Department(300, "営業部"));
 
-    private Employee createEmployee(int empno, int deptno) {
-        Employee emp = new Employee();
-        emp.setEmpno(empno);
-        emp.setDeptno(deptno);
-        return emp;
-    }
+		empList = List.of(
+				new Employee(10001, "山田", "陽翔", "ヤマダ", "ヒナタ", "password", 1, deptList.get(0)),
+				new Employee(10002, "中田", "結衣", "タナカ", "ユイ", "password", 2, deptList.get(0)),
+				new Employee(10003, "鈴木", "大翔", "スズキ", "ヒロト", "password", 1, deptList.get(2)));
+	}
 
-    @Test
-    void index_ReturnsIndexView() throws Exception {
-        mockMvc.perform(get("/index"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"));
-    }
+	// ---------- GET /index ----------
+	@Test
+	@DisplayName("index画面の表示：index ビューが返る")
+	void testIndex_ReturnsIndexView() throws Exception {
+		mockMvc.perform(get("/index"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("index"));
+	}
 
-    @Test
-    void showSearchPage_ReturnsSearchWithDepartments() throws Exception {
-        List<Department> departments = List.of(createDepartment(1, "Sales"));
-        when(departmentService.findAll()).thenReturn(departments);
+	// ---------- GET /search ----------
+	@Test
+	@DisplayName("検索画面の表示：部門リストをモデルに詰めて search を返す")
+	void testShowSearchPage_ReturnsSearchWithDepartments() throws Exception {
+		Mockito.when(departmentService.findAll()).thenReturn(deptList);
 
-        mockMvc.perform(get("/search"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("search"))
-                .andExpect(model().attribute("departments", departments));
-    }
+		mockMvc.perform(get("/search"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("search"))
+				.andExpect(model().attributeExists("departments"))
+				.andExpect(model().attribute("departments", hasSize(3)));
 
-    @Test
-    void selectByEmpNo_WithParam_ReturnsResult() throws Exception {
-        List<Employee> employees = List.of(createEmployee(1, 1));
-        when(employeeService.findByEmpNo(1)).thenReturn(employees);
+	}
 
-        mockMvc.perform(get("/selectByEmpNo").param("empno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("search_result"))
-                .andExpect(model().attribute("employees", employees));
-    }
+	// ---------- GET /selectByEmpNo?empno=10001 ----------
+	@Test
+	@DisplayName("社員番号検索（パラメータあり）：結果を search_result に表示")
+	void testSelectByEmpNo_WithParam_ReturnsResult() throws Exception {
+		List<Employee> mockEmployee = List.of(
+				new Employee(10001, "山田", "陽翔", "ヤマダ", "ヒナタ", "password", 1, deptList.get(0)));
+		Mockito.when(employeeService.findByEmpNo(10001)).thenReturn(mockEmployee);
+		mockMvc.perform(get("/selectByEmpNo").param("empno", "10001"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("search_result"))
+				.andExpect(model().attributeExists("employees"))
+				.andExpect(model().attribute("employees", hasSize(1)));
 
-    @Test
-    void selectByEmpNo_NoParam_ReturnsSearch() throws Exception {
-        mockMvc.perform(get("/selectByEmpNo"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("search"));
-    }
+	}
 
-    @Test
-    void selectByEmpName_ReturnsResult() throws Exception {
-        List<Employee> employees = List.of(createEmployee(1, 1));
-        when(employeeService.findByEmpName("foo")).thenReturn(employees);
+	// ---------- GET /selectByEmpNo（パラメータ無し） ----------
+	@Test
+	@DisplayName("社員番号検索（パラメータ無し）：検索画面に戻る")
+	void testSelectByEmpNo_NoParam_ReturnsSearch() throws Exception {
+		mockMvc.perform(get("/selectByEmpNo"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("search"));
+	}
 
-        mockMvc.perform(get("/selectByEmpName").param("keyword", "foo"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("search_result"))
-                .andExpect(model().attribute("employees", employees));
-    }
+	// ---------- GET /selectByEmpName?keyword=結衣 ----------
+	@Test
+	@DisplayName("氏名キーワード検索：「田」の検索結果を search_result に表示")
+	void testSelectByEmpName_ReturnsResult() throws Exception {
+		Mockito.when(employeeService.findByEmpName("田")).thenReturn(empList);
 
-    @Test
-    void selectByDeptNo_ReturnsResult() throws Exception {
-        List<Employee> employees = List.of(createEmployee(1, 1));
-        when(employeeService.findByDeptNo(1)).thenReturn(employees);
+		mockMvc.perform(get("/selectByEmpName").param("keyword", "田"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("search_result"))
+				.andExpect(model().attributeExists("employees"))
+				.andExpect(model().attribute("employees", hasSize(2)));
 
-        mockMvc.perform(get("/selectByDeptNo").param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("search_result"))
-                .andExpect(model().attribute("employees", employees));
-    }
+	}
 
-    @Test
-    void showInputPage_ReturnsInputWithDepartments() throws Exception {
-        List<Department> departments = List.of(createDepartment(1, "Sales"));
-        when(departmentService.findAll()).thenReturn(departments);
+	// ---------- GET /selectByDeptNo?deptno=100 ----------
+	@Test
+	@DisplayName("部門番号検索：結果を search_result に表示（件数も検証）")
+	void testSelectByDeptNo_ReturnsResult() throws Exception {
+		List<Employee> mockEmployee = List.of(
+				new Employee(10001, "山田", "陽翔", "ヤマダ", "ヒナタ", "password", 1, deptList.get(0)),
+				new Employee(10002, "中田", "結衣", "タナカ", "ユイ", "password", 2, deptList.get(0)));
+		Mockito.when(employeeService.findByDeptNo(100)).thenReturn(mockEmployee);
 
-        mockMvc.perform(get("/input"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("input"))
-                .andExpect(model().attribute("departments", departments));
-    }
+		mockMvc.perform(get("/selectByDeptNo").param("deptno", "100"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("search_result"))
+				.andExpect(model().attributeExists("employees"))
+				.andExpect(model().attribute("employees", hasSize(2)));
+	}
 
-    @Test
-    void confirmRegistration_WhenValidationFails_ReturnsInput() throws Exception {
-        List<Department> departments = List.of(createDepartment(1, "Sales"));
-        when(departmentService.findAll()).thenReturn(departments);
+	// ---------- GET /input ----------
+	@Test
+	@DisplayName("登録画面の表示：部門リストありで input を返す")
+	void testShowInputPage_ReturnsInputWithDepartments() throws Exception {
+		Mockito.when(departmentService.findAll()).thenReturn(deptList);
 
-        mockMvc.perform(post("/inputConfirm")
-                .param("lname", "")
-                .param("fname", "Taro")
-                .param("lkana", "ヤマダ")
-                .param("fkana", "タロウ")
-                .param("password", "pass")
-                .param("gender", "1")
-                .param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("input"))
-                .andExpect(model().attribute("departments", departments));
-    }
+		mockMvc.perform(get("/input"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("input"))
+				.andExpect(model().attributeExists("departments"))
+				.andExpect(model().attribute("departments", hasSize(3)));
+	}
 
-    @Test
-    void confirmRegistration_WhenValid_ReturnsConfirm() throws Exception {
-        Department department = createDepartment(1, "Sales");
-        when(departmentService.findById(1)).thenReturn(department);
+	// ---------- POST /inputConfirm（正常系） ----------
+	@Test
+	@DisplayName("登録確認(正常系)：バリデーションOKで input_confirm を返す（選択部門をモデルへ）")
+	void testConfirmRegistration_WhenValid_ReturnsConfirm() throws Exception {
+		Mockito.when(departmentService.findById(100)).thenReturn(deptList.get(0));
 
-        mockMvc.perform(post("/inputConfirm")
-                .param("lname", "Yamada")
-                .param("fname", "Taro")
-                .param("lkana", "ヤマダ")
-                .param("fkana", "タロウ")
-                .param("password", "pass")
-                .param("gender", "1")
-                .param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("input_confirm"))
-                .andExpect(model().attribute("department", department));
-    }
+		mockMvc.perform(post("/inputConfirm")
+				.param("lname", "山田")
+				.param("fname", "太郎")
+				.param("lkana", "ヤマダ")
+				.param("fkana", "タロウ")
+				.param("password", "passwords")
+				.param("gender", "1")
+				.param("deptno", "100"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("input_confirm"))
+				.andExpect(model().attributeExists("department"))
+				.andExpect(model().attribute("department", hasProperty("deptname",
+						is("人事部"))));
 
-    @Test
-    void saveEmployee_SavesAndReturnsComplete() throws Exception {
-        Department department = createDepartment(1, "Sales");
-        Employee mapped = new Employee();
-        Employee saved = new Employee();
-        saved.setEmpno(1);
-        when(modelMapper.map(any(EmployeeForm.class), eq(Employee.class))).thenReturn(mapped);
-        when(employeeService.saveEmployee(mapped)).thenReturn(saved);
-        when(departmentService.findById(1)).thenReturn(department);
+	}
 
-        mockMvc.perform(post("/saveEmployee")
-                .param("lname", "Yamada")
-                .param("fname", "Taro")
-                .param("lkana", "ヤマダ")
-                .param("fkana", "タロウ")
-                .param("password", "pass")
-                .param("gender", "1")
-                .param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("input_complete"))
-                .andExpect(model().attribute("department", department));
-    }
+	// ---------- POST /inputConfirm（NotNull&NotBlankバリデーションNG） ----------
+	@Test
+	@DisplayName("登録確認(異常系➀)：NotNull&NotBlankバリデーションNGで input に戻る（部門リスト存在）")
+	void testConfirmRegistration_WhenValidationFails1_ReturnsInput() throws Exception {
 
-    @Test
-    void deleteConfirm_ReturnsEmployeeInfo() throws Exception {
-        Employee employee = createEmployee(1, 1);
-        Department department = createDepartment(1, "Sales");
-        when(employeeService.findByEmployee(1)).thenReturn(employee);
-        when(departmentService.findById(1)).thenReturn(department);
+		mockMvc.perform(post("/inputConfirm")
+				.param("lname", "")
+				.param("fname", "")
+				.param("lkana", "")
+				.param("fkana", "")
+				.param("password", "")
+				.param("gender", "")
+				.param("deptno", ""))
+				.andExpect(status().isOk())
+				.andExpect(view().name("input"))
+				.andExpect(model().attributeExists("departments"))
+				.andExpect(model().attributeHasFieldErrors(
+						"employeeForm", "lname", "fname", "lkana", "password", "gender", "deptno"));
 
-        mockMvc.perform(get("/deleteConfirm/1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("delete_confirm"))
-                .andExpect(model().attribute("employee", employee))
-                .andExpect(model().attribute("department", department));
-    }
+	}
 
-    @Test
-    void deleteEmployee_PerformsDeleteAndReturnsComplete() throws Exception {
-        Department department = createDepartment(1, "Sales");
-        when(departmentService.findById(1)).thenReturn(department);
+	// ---------- POST /inputConfirm（その他バリデーションNG） ----------
+	@Test
+	@DisplayName("登録確認(異常系➁)：その他バリデーションNGで input に戻る（部門リスト存在）")
+	void testConfirmRegistration_WhenValidationFails2_ReturnsInput() throws Exception {
 
-        mockMvc.perform(post("/deleteEmployee")
-                .param("empno", "1")
-                .param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("delete_complete"))
-                .andExpect(model().attribute("department", department));
+		mockMvc.perform(post("/inputConfirm")
+				.param("lname", "氏".repeat(11))// 11文字で違反
+				.param("fname", "名".repeat(11))// 11文字で違反
+				.param("lkana", "し".repeat(11))// 11文字で違反
+				.param("fkana", "め".repeat(11))// 11文字で違反
+				.param("password", "p".repeat(7)) // 7文字で違反
+				.param("gender", "1") //正常
+				.param("deptno", "100")) //正常
+				.andExpect(status().isOk())
+				.andExpect(view().name("input"))
+				.andExpect(model().attributeExists("departments"))
+				.andExpect(model().attributeHasFieldErrors(
+						"employeeForm", "lname", "fname", "lkana", "password"));
 
-        verify(employeeService).deleteEmployeeById(1);
-    }
+	}
 
-    @Test
-    void changeInput_ReturnsFormAndDepartments() throws Exception {
-        EmployeeForm form = new EmployeeForm();
-        form.setEmpno(1);
-        form.setLname("Yamada");
-        form.setFname("Taro");
-        form.setLkana("ヤマダ");
-        form.setFkana("タロウ");
-        form.setPassword("pass");
-        form.setGender(1);
-        form.setDeptno(1);
-        List<Department> departments = List.of(createDepartment(1, "Sales"));
-        when(employeeService.findByEmpNoAndCopyToEmployeeForm(eq(1), any(EmployeeForm.class))).thenReturn(form);
-        when(departmentService.findAll()).thenReturn(departments);
+	// ---------- POST /saveEmployee ----------
+	@Test
+	@DisplayName("登録実行：保存して input_complete を返す（ModelMapper不使用）")
+	void testSaveEmployee_SavesAndReturnsComplete() throws Exception {
+		Mockito.when(departmentService.findById(100)).thenReturn(deptList.get(0));
 
-        mockMvc.perform(get("/changeInput/1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("change"))
-                .andExpect(model().attribute("employeeForm", form))
-                .andExpect(model().attribute("departments", departments));
-    }
+		mockMvc.perform(post("/saveEmployee")
+				.param("lname", "山田")
+				.param("fname", "太郎")
+				.param("lkana", "ヤマダ")
+				.param("fkana", "タロウ")
+				.param("password", "passwords")
+				.param("gender", "1")
+				.param("deptno", "100"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("input_complete"))
+				.andExpect(model().attributeExists("department"))
+				.andExpect(model().attribute("department", hasProperty("deptname",
+						is("人事部"))));
 
-    @Test
-    void changeConfirm_WhenValidationFails_ReturnsChange() throws Exception {
-        List<Department> departments = List.of(createDepartment(1, "Sales"));
-        when(departmentService.findAll()).thenReturn(departments);
+	}
 
-        mockMvc.perform(post("/changeConfirm")
-                .param("lname", "")
-                .param("fname", "Taro")
-                .param("lkana", "ヤマダ")
-                .param("fkana", "タロウ")
-                .param("password", "pass")
-                .param("gender", "1")
-                .param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("change"))
-                .andExpect(model().attribute("departments", departments));
-    }
+	// ---------- GET /deleteConfirm/{empno} ----------
+	@Test
+	@DisplayName("削除確認：社員情報と部門情報を表示")
+	void testDeleteConfirm_ReturnsEmployeeInfo() throws Exception {
+		Mockito.when(employeeService.findByEmployee(10001)).thenReturn(empList.get(0));
 
-    @Test
-    void changeConfirm_WhenValid_ReturnsConfirm() throws Exception {
-        Department department = createDepartment(1, "Sales");
-        when(departmentService.findById(1)).thenReturn(department);
+		mockMvc.perform(get("/deleteConfirm/10001"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("delete_confirm"))
+				.andExpect(model().attributeExists("employee"))
+				.andExpect(model().attribute("employee", hasProperty("empno", is(10001))));
+	}
 
-        mockMvc.perform(post("/changeConfirm")
-                .param("lname", "Yamada")
-                .param("fname", "Taro")
-                .param("lkana", "ヤマダ")
-                .param("fkana", "タロウ")
-                .param("password", "pass")
-                .param("gender", "1")
-                .param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("change_confirm"))
-                .andExpect(model().attribute("department", department));
-    }
+	// ---------- POST /deleteEmployee ----------
+	@Test
+	@DisplayName("削除実行：削除して delete_complete を返す")
+	void testDeleteEmployee_PerformsDeleteAndReturnsComplete() throws Exception {
+		Mockito.when(employeeService.findByEmployee(10001)).thenReturn(empList.get(0));
 
-    @Test
-    void changeEmployee_UpdatesAndReturnsComplete() throws Exception {
-        Department department = createDepartment(1, "Sales");
-        Employee mapped = new Employee();
-        Employee saved = new Employee();
-        saved.setEmpno(1);
-        when(modelMapper.map(any(EmployeeForm.class), eq(Employee.class))).thenReturn(mapped);
-        when(employeeService.saveEmployee(mapped)).thenReturn(saved);
-        when(departmentService.findById(1)).thenReturn(department);
+		mockMvc.perform(post("/deleteEmployee")
+				.param("empno", "10001")
+				.param("lname", "山田")
+				.param("fname", "太郎")
+				.param("lkana", "ヤマダ")
+				.param("fkana", "タロウ")
+				.param("password", "passwords")
+				.param("gender", "1")
+				.param("deptno", "100"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("delete_complete"))
+				.andExpect(model().attributeExists("employee"))
+				.andExpect(model().attribute("employee", hasProperty("empno", is(10001))));
 
-        mockMvc.perform(post("/changeEmployee")
-                .param("empno", "1")
-                .param("lname", "Yamada")
-                .param("fname", "Taro")
-                .param("lkana", "ヤマダ")
-                .param("fkana", "タロウ")
-                .param("password", "pass")
-                .param("gender", "1")
-                .param("deptno", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("change_complete"))
-                .andExpect(model().attribute("department", department));
-    }
+	}
+
+	// ---------- GET /changeInput/{empno} ----------
+	@Test
+	@DisplayName("変更画面表示：フォーム値と部門リストをモデルに詰める")
+	void testChangeInput_ReturnsFormAndDepartments() throws Exception {
+
+		Mockito.when(departmentService.findAll()).thenReturn(deptList);
+
+		mockMvc.perform(get("/changeInput/10001"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("change"))
+				.andExpect(model().attributeExists("employeeForm", "departments"))
+				.andExpect(model().attribute("departments", hasSize(3)));
+
+	}
+
+	// ---------- POST /changeConfirm（バリデーションOK） ----------
+	@Test
+	@DisplayName("変更確認(正常系)：バリデーションOKで change_confirm を返す（選択部門をモデルへ）")
+	void testChangeConfirm_WhenValid_ReturnsConfirm() throws Exception {
+		when(departmentService.findById(100)).thenReturn(deptList.get(0));
+
+		mockMvc.perform(post("/changeConfirm")
+				.param("empno", "10001")
+				.param("lname", "山田")
+				.param("fname", "太郎")
+				.param("lkana", "ヤマダ")
+				.param("fkana", "タロウ")
+				.param("password", "passwords")
+				.param("gender", "1")
+				.param("deptno", "100"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("change_confirm"))
+				.andExpect(model().attributeExists("department"))
+				.andExpect(model().attribute("department", hasProperty("deptname",
+						is("人事部"))));
+	}
+
+	// ---------- POST /changeConfirm（バリデーションNG） ----------
+	@Test
+	@DisplayName("変更確認(異常系➀)：NotNull&NotBlankバリデーションNGで change に戻る（部門リスト存在）")
+	void testChangeConfirm_WhenValidationFails1_ReturnsChange() throws Exception {
+
+		mockMvc.perform(post("/changeConfirm")
+				.param("lname", "")
+				.param("fname", "")
+				.param("lkana", "")
+				.param("fkana", "")
+				.param("password", "")
+				.param("gender", "")
+				.param("deptno", ""))
+				.andExpect(status().isOk())
+				.andExpect(view().name("change"))
+				.andExpect(model().attributeExists("departments"))
+				.andExpect(model().attributeHasFieldErrors(
+						"employeeForm", "lname", "fname", "lkana", "password", "gender", "deptno"));
+	}
+
+	// ---------- POST /changeConfirm（バリデーションNG） ----------
+	@Test
+	@DisplayName("変更確認(異常系➁)：その他バリデーションNGで change に戻る（部門リスト存在）")
+	void testChangeConfirm_WhenValidationFails2_ReturnsChange() throws Exception {
+
+		mockMvc.perform(post("/changeConfirm")
+				.param("lname", "氏".repeat(11))// 11文字で違反
+				.param("fname", "名".repeat(11))// 11文字で違反
+				.param("lkana", "し".repeat(11))// 11文字で違反
+				.param("fkana", "め".repeat(11))// 11文字で違反
+				.param("password", "p".repeat(7)) // 7文字で違反
+				.param("gender", "1") //正常
+				.param("deptno", "100")) //正常
+				.andExpect(status().isOk())
+				.andExpect(view().name("change"))
+				.andExpect(model().attributeExists("departments"))
+				.andExpect(model().attributeHasFieldErrors(
+						"employeeForm", "lname", "fname", "lkana", "password"));
+	}
+
+	// ---------- POST /changeEmployee ----------
+	@Test
+	@DisplayName("変更実行：保存して change_complete を返す（ModelMapper不使用）")
+	void testChangeEmployee_UpdatesAndReturnsComplete() throws Exception {
+		Mockito.when(departmentService.findById(100)).thenReturn(deptList.get(0));
+
+		mockMvc.perform(post("/changeEmployee")
+				.param("empno", "10001")
+				.param("lname", "山田")
+				.param("fname", "太郎")
+				.param("lkana", "ヤマダ")
+				.param("fkana", "タロウ")
+				.param("password", "passwords")
+				.param("gender", "1")
+				.param("deptno", "100"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("change_complete"))
+				.andExpect(model().attributeExists("department"))
+				.andExpect(model().attribute("department", hasProperty("deptno", is(100))));
+
+	}
 }

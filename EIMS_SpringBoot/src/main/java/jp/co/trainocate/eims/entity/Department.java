@@ -32,4 +32,14 @@ public class Department {
     /** 部署に所属する社員一覧 */
     @OneToMany(mappedBy = "department")
     private List<Employee> employees;
+    
+
+    // ★追加：部門番号・部門名を同時設定するコンストラクタ
+    public Department(Integer deptno, String deptname) {
+        this.deptno = deptno;
+        this.deptname = deptname;
+    }
+
+    // ★JPA用のデフォルトコンストラクタ（必須）
+    public Department() {}
 }

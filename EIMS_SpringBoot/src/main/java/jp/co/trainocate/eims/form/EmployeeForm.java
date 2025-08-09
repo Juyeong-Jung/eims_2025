@@ -37,7 +37,7 @@ public class EmployeeForm {
 
     /** パスワード */
     @NotBlank(message = "パスワードは必須項目です")
-    @Size(max = 8, message = "パスワードは8文字以内で入力してください")
+    @Size(min = 8, message = "パスワードは8文字以上で入力してください")
     private String password;
 
     /** 性別 1:男性 2:女性 */
@@ -45,5 +45,6 @@ public class EmployeeForm {
     private Integer gender;
 
     /** 部署番号 */
+    @NotNull(message = "部署の選択は必須です")
     private Integer deptno;
 }
