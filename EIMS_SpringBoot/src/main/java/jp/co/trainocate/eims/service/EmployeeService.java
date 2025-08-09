@@ -36,8 +36,8 @@ public interface EmployeeService {
      * @param employee 保存対象のエンティティ
      * @return 保存後のエンティティ
      */
-    Employee saveEmployee(Employee employee);
-
+    //Employee saveEmployee(Employee employee);
+    Employee saveEmployee(EmployeeForm form);  
     /**
      * 社員番号を指定して 1 件の従業員を取得します。
      * @param empno 社員番号
