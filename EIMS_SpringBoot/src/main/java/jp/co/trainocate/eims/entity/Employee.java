@@ -85,18 +85,7 @@ public class Employee {
 		this.deptno = deptno;
 	}
 
-	// ★追加：Id以外の全主要フィールドを同時設定するコンストラクタ。departmentを初期化するパターン
-		public Employee(String lname, String fname, String lkana, String fkana,
-				String password, Integer gender, Integer deptno) {
-			super();
-			this.lname = lname;
-			this.fname = fname;
-			this.lkana = lkana;
-			this.fkana = fkana;
-			this.password = password;
-			this.gender = gender;
-			this.deptno = deptno;
-		}
+	
 		
 	// ★JPA用のデフォルトコンストラクタ（必須）
 	public Employee() {

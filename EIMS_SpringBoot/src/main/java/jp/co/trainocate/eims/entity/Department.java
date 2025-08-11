@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Table(name = "department")
 public class Department {
-    // 主キーの部署番号。自動採番を使用
+    // 主キーの部署番号。
     @Id
     /** 部署番号 */
     private Integer deptno;
@@ -38,11 +38,7 @@ public class Department {
         this.deptname = deptname;
     }
     
- // ★追加：部門名を同時設定するコンストラクタ
-    public Department(String deptname) {
-        this.deptname = deptname;
-    }
-
+ 
     // ★JPA用のデフォルトコンストラクタ（必須）
     public Department() {}
 }
