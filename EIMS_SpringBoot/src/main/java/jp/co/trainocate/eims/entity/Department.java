@@ -8,8 +8,6 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -21,7 +19,6 @@ import lombok.Data;
 public class Department {
     // 主キーの部署番号。自動採番を使用
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     /** 部署番号 */
     private Integer deptno;
 	
@@ -36,7 +33,13 @@ public class Department {
 
     // ★追加：部門番号・部門名を同時設定するコンストラクタ
     public Department(Integer deptno, String deptname) {
-        this.deptno = deptno;
+        super();
+    	this.deptno = deptno;
+        this.deptname = deptname;
+    }
+    
+ // ★追加：部門名を同時設定するコンストラクタ
+    public Department(String deptname) {
         this.deptname = deptname;
     }
 
