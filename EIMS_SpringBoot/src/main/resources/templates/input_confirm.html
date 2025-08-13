@@ -3,13 +3,15 @@
   入力内容の確認ページ。
   ユーザーが入力した内容を表示し、問題なければ登録処理を行います。
 -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <title>社員情報登録確認</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+   <main layout:fragment="main_content">
         <h1 class="mt-5">社員情報登録確認</h1>
         <p>以下の内容で社員情報を登録しますか？</p>
         <!-- 確定ボタンで登録処理を行う -->
@@ -59,7 +61,7 @@
             <input type="hidden" th:field="*{deptno}" />
             <input type="hidden" th:field="*{password}" />
         </form>
-       
-    </div>
+   </main>
+   
 </body>
 </html>

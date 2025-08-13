@@ -39,14 +39,15 @@
       <!-- サイドバー -->
       <aside class="col-12 col-md-3 col-xl-2 mb-3 mb-md-0">
         <div class="list-group list-group-flush small">
-          <a th:href="@{/}" class="list-group-item list-group-item-action">トップ</a>
+          <a th:href="@{/}" class="list-group-item list-group-item-action">トップページ</a>
           <a th:href="@{/search}" class="list-group-item list-group-item-action">社員検索</a>
           <a th:href="@{/input}" class="list-group-item list-group-item-action">社員登録</a>
         </div>
       </aside>
 
       <!-- コンテンツ差し込み -->
-      <main class="col-12 col-md-9 col-xl-10" layout:fragment="main_content">
+      
+      <main class="col-9 col-md-9 col-xl-10" layout:fragment="main_content">
         <!-- 子テンプレートが差し込みます -->
       </main>
 
@@ -54,9 +55,9 @@
   </div>
 
   <!-- フッター -->
-  <footer class="border-top py-3 mt-auto bg-white">
+  <footer class="border-top py-3 mt-auto bg-light ">
     <div class="container-fluid text-center text-muted small">
-      © EIMS Training
+      © Trainocate EIMS 2025 
     </div>
   </footer>
 

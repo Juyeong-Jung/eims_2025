@@ -20,7 +20,7 @@
   <div class="mb-4">
     <h4 class="h6">社員番号検索</h4>
     <form th:action="@{/selectByEmpNo}" method="get" class="form-inline">
-      <div class="form-group mr-2 mb-2">
+      <div class="form-group me-5 mb-2 col-5">
         <input type="number" name="empno" class="form-control" placeholder="社員番号">
       </div>
       <button type="submit" class="btn btn-primary mb-2">検索</button>
@@ -31,7 +31,7 @@
   <div class="mb-4">
     <h4 class="h6">社員名検索</h4>
     <form th:action="@{/selectByEmpName}" method="get" class="form-inline">
-      <div class="form-group mr-2 mb-2">
+      <div class="form-group me-5 mb-2 col-5">
         <input type="text" name="keyword" class="form-control" placeholder="姓 または 名（部分一致）">
       </div>
       <button type="submit" class="btn btn-primary mb-2">検索</button>
@@ -42,7 +42,7 @@
   <div class="mb-4">
     <h4 class="h6">部署名検索</h4>
     <form th:action="@{/selectByDeptNo}" method="get" class="form-inline">
-      <div class="form-group mr-2 mb-2">
+      <div class="form-group me-5 mb-2 col-5">
         <select name="deptno" class="form-control">
           <option th:each="dept : ${departments}"
                   th:value="${dept.deptno}"

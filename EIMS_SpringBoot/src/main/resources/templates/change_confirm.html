@@ -3,13 +3,15 @@
   更新内容の確認ページ。
   表示された内容でよければ変更確定ボタンを押します。
 -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <title>社員情報登録確認</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+	<main layout:fragment="main_content">
         <h1 class="mt-5">社員情報変更確認</h1>
         <p>以下の内容で社員情報を更新しますか？</p>
         <!-- 確定ボタンを押すと更新処理を実行 -->
@@ -64,6 +66,6 @@
             <input type="hidden" th:field="*{deptno}" />
             <input type="hidden" th:field="*{password}" />
         </form>
-    </div>
+    </main>
 </body>
 </html>

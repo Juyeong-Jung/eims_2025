@@ -3,13 +3,15 @@
   既存の社員情報を修正する入力画面。
   変更後の内容は確認画面に送られます。
 -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <title>社員情報登録確認</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-   <div class="container mt-5">
+	<main layout:fragment="main_content">
         <h1 class="mb-4">社員情報変更</h1>
         <p>変更内容を入力してください。</p>
         <!-- 入力内容を確認画面へ送信 -->
@@ -83,6 +85,6 @@
             <a th:href="@{/search}" class="btn btn-secondary">取消</a>
             </div>
         </form>
-    </div>
+    </main>
 </body>
 </html>

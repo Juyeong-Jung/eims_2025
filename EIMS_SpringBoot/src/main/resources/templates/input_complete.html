@@ -3,13 +3,15 @@
   登録完了ページ。
   登録した内容を表示し、続けて追加登録するかトップへ戻るか選択します。
 -->
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <title>社員情報登録確認</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+	<main layout:fragment="main_content">
         <h1 class="mt-5">社員情報登録完了</h1>
           <p>以下の社員情報を登録しました。</p>
         <!-- 追加登録ボタンを押すと再び入力画面へ -->
@@ -53,6 +55,6 @@
             	<a th:href="@{/}" class="btn btn-secondary">トップページに戻る</a>
             </div>
         </form>
-    </div>
+	</main>    
 </body>
 </html>
