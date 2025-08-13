@@ -22,4 +22,7 @@ public interface DepartmentService {
      * @return 部署エンティティ。存在しない場合は null
      */
     Department findById(Integer deptno);
+    
+    
+    
 }

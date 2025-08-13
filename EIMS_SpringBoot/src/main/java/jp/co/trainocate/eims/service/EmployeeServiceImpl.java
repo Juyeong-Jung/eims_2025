@@ -102,4 +102,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		e.setDeptno(f.getDeptno()); // 外部キー列を設定（departmentは不要）
 		return employeeRepository.save(e);
 	}
+
+	/**
+	 * ログイン認証メソッド
+	 * 社員番号とパスワードが一致する場合、社員情報を返却します。
+	 */
+	@Override
+	public Employee findByEmpnoAndPassword(Integer empno, String password) {
+		
+		return employeeRepository.findByEmpnoAndPassword(empno, password);
+	}
 }

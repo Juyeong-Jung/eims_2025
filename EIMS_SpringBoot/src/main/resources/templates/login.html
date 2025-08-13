@@ -1,0 +1,70 @@
+<!-- src/main/resources/templates/login.html -->
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ログイン</title>
+    <!-- Bootstrap CSS の読み込み -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+
+<body>
+    <header class="py-2 border-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h1 class="h5 m-0">EIMS ログイン</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <!-- 必要に応じて表示するアラート（見た目用のサンプル） -->
+                    <!-- <div class="alert alert-info" role="alert">タイムアウトしました。再度ログインしてください。</div> -->
+                    
+                    <div th:if = "${loginError}" class="alert alert-danger" role="alert">社員番号またはパスワードが正しくありません。</div>
+                    <!-- <div class="alert alert-success" role="alert">ログアウトしました。</div> -->
+
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h2 class="h5 mb-4 text-center">ログイン</h2>
+
+                            <form th:action="@{/login}" method="post" th:object = "${loginForm}">
+                                <!-- 社員番号 -->
+                                <div class="mb-3">
+                                    <label for="empno" class="form-label">社員番号</label>
+                                    <input type="text" class="form-control" th:field = "*{empno}"
+                                        placeholder="例）10001" th:classappend="${#fields.hasErrors('empno')} ? ' is-invalid'">
+                                    <div class="invalid-feedback" th:errors = "*{empno}"></div>
+                                </div> <!--Bootstrapでは、th:classappendの後ろの属性を、上記のように書いて、その下に、invalid-feedbackを追加すると、きれいなエラーメッセージを表示してくれます。 -->
+
+                                <!-- パスワード -->
+                                <div class="mb-4">
+                                    <label for="password" class="form-label">パスワード</label>
+                                    <input type="password" th:field = "*{password}" class="form-control"
+                                        placeholder="8文字以上" th:classappend="${#fields.hasErrors('password')} ? ' is-invalid'">
+                                    <div class="invalid-feedback" th:errors = "*{password}"></div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">ログイン</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

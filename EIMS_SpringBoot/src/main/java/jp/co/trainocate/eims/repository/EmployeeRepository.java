@@ -38,4 +38,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
      * @return 従業員リスト
      */
     List<Employee> findByDepartmentDeptno(Integer deptno);
+    
+    
+    /**
+     * オプション機能【ログイン機能用】
+     * 社員番号とパスワードが一致する場合、社員情報を取得します。
+     * @param empno 社員番号、password パスワード
+     * @return 社員エンティティ。存在しない場合は null
+     */
+    Employee findByEmpnoAndPassword(Integer empno, String password);
+   
 }
