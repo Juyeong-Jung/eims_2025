@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>EIMS</title>
+
+  <!-- Bootstrap -->
+ <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<!--   App CSS 
+  <link rel="stylesheet" th:href="@{/css/site.css}">
+--></head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- ヘッダー -->
+  <nav class="navbar navbar-light bg-light border-bottom">
+    <div class="container-fluid">
+      <a class="navbar-brand" th:href="@{/}">EIMS</a>
+     <!-- <div class="d-flex align-items-center">
+        <span class="mr-3" th:if="${session.user != null}">
+          ようこそ、<strong th:text="${session.user.lname + ' ' + session.user.fname}">山田 太郎</strong> さん
+        </span>
+        <a class="btn btn-outline-secondary btn-sm"
+           th:if="${session.user != null}"
+           th:href="@{/logout}">ログアウト</a>
+        <a class="btn btn-primary btn-sm"
+           th:if="${session.user == null}"
+           th:href="@{/login}">ログイン</a>
+      </div>-->
+    </div>
+  </nav>
+
+  <!-- 本体 -->
+  <div class="container-fluid my-3">
+    <div class="row">
+
+      <!-- サイドバー -->
+      <aside class="col-12 col-md-3 col-xl-2 mb-3 mb-md-0">
+        <div class="list-group list-group-flush small">
+          <a th:href="@{/}" class="list-group-item list-group-item-action">トップ</a>
+          <a th:href="@{/search}" class="list-group-item list-group-item-action">社員検索</a>
+          <a th:href="@{/input}" class="list-group-item list-group-item-action">社員登録</a>
+        </div>
+      </aside>
+
+      <!-- コンテンツ差し込み -->
+      <main class="col-12 col-md-9 col-xl-10" layout:fragment="main_content">
+        <!-- 子テンプレートが差し込みます -->
+      </main>
+
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer class="border-top py-3 mt-auto bg-white">
+    <div class="container-fluid text-center text-muted small">
+      © EIMS Training
+    </div>
+  </footer>
+
+  <!-- JS -->
+ <script th:src="@{/js/bootstrap.bundle.min.js}"></script> 
+ </body>
+</html>
