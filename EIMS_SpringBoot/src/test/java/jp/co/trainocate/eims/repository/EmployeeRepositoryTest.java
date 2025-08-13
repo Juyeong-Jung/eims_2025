@@ -108,14 +108,17 @@ class EmployeeRepositoryTest {
 	
 	/**
 	 * 部署番号での検索が 2 件ヒットすることを検証。
-	 * ※ 取得順はDB/実装に依存して未保証。実務では順序前提の検証は避けるのが無難。
 	 */
 	@Test
 	void testFindByDepartmentDeptno() {
 		List<Employee> result = empRepo.findByDepartmentDeptno(110);
 		assertThat(result).hasSize(2);
-		// ここでは例として先頭要素を簡易チェック（厳密さが必要なら順序を指定して検索する/順序非依存の検証にする）
-		assertThat(result.get(0).getLname()).isEqualTo("山田");
-		assertThat(result.get(0).getDeptno()).isEqualTo(110);
+		//取得した2件のデータ内のlnameと、deptnoの値を順序関係なく検証
+		assertThat(result)
+        .extracting("lname", "deptno")
+        .containsExactlyInAnyOrder(
+            tuple("山田",110),
+            tuple("鈴木",110)
+        );
 	}
 }
