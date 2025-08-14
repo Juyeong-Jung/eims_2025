@@ -47,4 +47,7 @@ public class EmployeeForm {
     /** 部署番号 */
     @NotNull(message = "部署の選択は必須です")
     private Integer deptno;
+    
+  //【オプション機能 管理者追加】
+    private Integer role;
 }

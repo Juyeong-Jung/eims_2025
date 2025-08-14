@@ -63,4 +63,8 @@ public interface EmployeeService {
      */
     EmployeeForm findByEmpNoAndCopyToEmployeeForm(int empno, EmployeeForm employeeForm);
 
+    //【オプション機能 管理者のみできる、全件検索】
+    List<Employee> findByAllEmployee();
+    
+    
 }

@@ -18,6 +18,7 @@
             <a th:href="@{/search}" class="btn btn-success">検索画面に戻る</a>
             <a th:href="@{/}" class="btn btn-secondary">トップページに戻る</a>
         </div>
+        <div th:if="${session.user.role == 1}">
         <div th:if="${employees.size() > 0}">
             <!-- 件数を表示 -->
             <h2 th:text="'検索件数：' + ${employees.size()} + '件'"></h2>
@@ -62,8 +63,12 @@ alt=${employee.lname} + ' ' + ${employee.fname}, width=60, height=70"> </td>
                 </table>
             </div>
         </div>
+        </div>
         <div th:if="${employees.size() == 0}">
             <h2>該当する社員は存在しませんでした。</h2>
+        </div>
+        <div th:if="${session.user.role() == 0}">
+            <h2>全社員一覧は、管理者のみ閲覧可能です。</h2>
         </div>
         <div class="button-group mb-3">
             <a th:href="@{/search}" class="btn btn-success">検索画面に戻る</a>

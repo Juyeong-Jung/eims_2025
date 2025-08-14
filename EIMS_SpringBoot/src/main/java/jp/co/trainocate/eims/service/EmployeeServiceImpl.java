@@ -102,4 +102,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		e.setDeptno(f.getDeptno()); // 外部キー列を設定（departmentは不要）
 		return employeeRepository.save(e);
 	}
+
+	//【オプション機能 管理者のみできる、全件検索】
+	@Override
+	public List<Employee> findByAllEmployee() {
+		return employeeRepository.findAll();
+	}
 }
