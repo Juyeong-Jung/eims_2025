@@ -35,28 +35,23 @@
                     <tbody>
                         <!-- 検索結果を1行ずつ表示 -->
                         <tr th:each="employee : ${employees}">
-                            <td class="text-center"><img th:attr="src=@{/images/} + ${employee.empno} + @{.png}, 
+                            <td class="text-center align-middle"><img th:attr="src=@{/images/} + ${employee.empno} + @{.png}, 
 alt=${employee.lname} + ' ' + ${employee.fname}, width=60, height=70"> </td>
-                            <td th:text="${employee.empno}"></td>
-                            <td>
+                            <td th:text="${employee.empno}" class = "align-middle"></td>
+                            <td class = "align-middle">
                                 <span th:text="${employee.lname} + ' ' + ${employee.fname}"></span>
                                 <span th:text="'（' + ${employee.lkana} + ' ' + ${employee.fkana} + '）'"></span>
                             </td>
-                            <td th:text="${employee.department.deptname}"></td>
-                            <td class="text-center">
-                                <div class="btn-group" role="group">
-                                    <!-- 変更ボタン -->
-                                    <form th:action="@{/changeInput/}+ ${employee.empno}" method="get"
-                                        style="display:inline;">
-                                        <button type="submit" class="btn btn-primary">変更</button>
-                                    </form>
-                                    <!-- 削除ボタン -->
-                                    <form th:action="@{/deleteConfirm/}+ ${employee.empno}" method="get"
-                                        style="display:inline;">
-                                        <button type="submit" class="btn btn-danger">削除</button>
-                                    </form>
-                                </div>
+                           
+                                                            <td th:text="${employee.department.deptname}" class = "align-middle"></td>
+                            <td class="text-center align-middle">
+                                <a th:href = "@{/changeInput/}+ ${employee.empno}" class="btn btn-primary">
+                                変更</a>
+                                <a th:href = "@{/deleteConfirm/}+ ${employee.empno}" class="btn btn-danger">
+                                削除</a>
+                                
                             </td>
+                            
                         </tr>
                     </tbody>
                 </table>
