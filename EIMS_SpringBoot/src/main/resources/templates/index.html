@@ -42,7 +42,9 @@
     <h2 class="mb-3">メニュー</h2>
     <div class="list-group">
 		 <!-- 全社員一覧画面へのリンク -->
+      <span th:if = "${session.user != null}">
       <h3 th:if = "${session.user.role == 1}"><a th:href="@{/findAll}" class="list-group-item list-group-item-action">■全社員一覧表示</a></h3>
+      </span>
       <h3><a th:href="@{/search}" class="list-group-item list-group-item-action">■社員情報検索</a></h3>
       <h3><a th:href="@{/input}"  class="list-group-item list-group-item-action">■社員情報登録</a></h3>
     </div>

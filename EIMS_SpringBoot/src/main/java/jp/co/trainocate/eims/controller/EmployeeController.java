@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jp.co.trainocate.eims.entity.Employee;
 import jp.co.trainocate.eims.form.EmployeeForm;
@@ -171,11 +172,22 @@ public class EmployeeController {
 		return "change_complete";
 	}
 
-	/** トップページを表示する */
+	/** 管理者専用機能。トップページを表示する */
 	@GetMapping("/findAll")
-	public String findAll(Model model) {
-		List<Employee > employees = employeeService.findByAllEmployee();
-		model.addAttribute("employees", employees);
-		return "search_result";
+	public String findAll(Model model, HttpSession session) {
+		
+		Employee userData = (Employee) session.getAttribute("user");
+		
+		//ログイン済みと、管理者である場合のみ、検索結果を表示
+		if (userData != null && userData.getRole() == 1) {
+			List<Employee> employees = employeeService.findByAllEmployee();
+			model.addAttribute("employees", employees);
+			return "search_result";
+			
+		//未ログイン又は、一般ユーザーの場合は、トップページへ	
+		} else {
+			return "index";
+		}
+
 	}
 }

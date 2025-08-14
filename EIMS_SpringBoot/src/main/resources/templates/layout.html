@@ -40,9 +40,9 @@
       <aside class="col-12 col-md-3 col-xl-2 mb-3 mb-md-0">
         <div class="list-group list-group-flush small">
           <a th:href="@{/}" class="list-group-item list-group-item-action">トップページ</a>
-          
+          <span th:if = "${session.user != null}">
           <a th:if = "${session.user.role == 1}" th:href="@{/findAll}" class="list-group-item list-group-item-action">全社員一覧</a>
-         
+          </span>
           <a th:href="@{/search}" class="list-group-item list-group-item-action">社員検索</a>
           <a th:href="@{/input}" class="list-group-item list-group-item-action">社員登録</a>
         </div>
