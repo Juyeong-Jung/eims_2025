@@ -108,4 +108,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<Employee> findByAllEmployee() {
 		return employeeRepository.findAll();
 	}
+	/**
+	 * ログイン認証メソッド
+	 * 社員番号とパスワードが一致する場合、社員情報を返却します。
+	 */
+	@Override
+	public Employee findByEmpnoAndPassword(Integer empno, String password) {
+		
+		return employeeRepository.findByEmpnoAndPassword(empno, password);
+
+	}
 }
