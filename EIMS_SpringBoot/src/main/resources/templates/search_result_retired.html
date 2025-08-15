@@ -20,7 +20,7 @@
         </div>
         <div th:if="${employees.size() > 0}">
             <!-- 件数を表示 -->
-            <h2 th:text="'検索件数：' + ${employees.size()} + '件(退職者含む)'"></h2>
+            <h2 th:text="'検索件数：' + ${employees.size()} + '件'"></h2>
             <div class="me-5">
                 <table class="table table-bordered">
                     <thead class="text-center">
@@ -33,8 +33,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- 検索結果を1行ずつ表示（在籍者のみ表示：deleteFlg==0） -->
-                        <tr th:each="employee : ${employees}" th:if="${employee.deleteFlg == 0}">
+                        <!-- 検索結果を1行ずつ表示 -->
+                        <tr th:each="employee : ${employees}">
                             <td class="text-center align-middle"><img th:attr="src=@{/images/} + ${employee.empno} + @{.png}, 
 alt=${employee.lname} + ' ' + ${employee.fname}, width=60, height=70"> </td>
                             <td th:text="${employee.empno}" class = "align-middle"></td>
@@ -45,10 +45,12 @@ alt=${employee.lname} + ' ' + ${employee.fname}, width=60, height=70"> </td>
                            
                                                             <td th:text="${employee.department.deptname}" class = "align-middle"></td>
                             <td class="text-center align-middle">
-                                <a th:href = "@{/changeInput/}+ ${employee.empno}" class="btn btn-primary">
-                                変更</a>
-                                <a th:href = "@{/deleteConfirm/}+ ${employee.empno}" class="btn btn-danger">
-                                削除</a>
+                               <form th:action="@{'/restoreDeleteEmployee/' + ${employee.empno}}" method="post" class="d-inline">
+  <button type="submit" class="btn btn-primary">復元</button>
+</form>
+<form th:action="@{'/physicalDeleteEmployee/' + ${employee.empno}}" method="post" class="d-inline">
+  <button type="submit" class="btn btn-danger">完全削除</button>
+</form>
                                 
                             </td>
                             

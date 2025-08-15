@@ -50,6 +50,8 @@ public interface EmployeeService {
      * @param empno 削除対象の社員番号
      */
     void deleteEmployeeById(Integer empno);
+    
+    
 
     /**
      * 指定した社員番号の従業員情報を検索し、
@@ -63,4 +65,25 @@ public interface EmployeeService {
      */
     EmployeeForm findByEmpNoAndCopyToEmployeeForm(int empno, EmployeeForm employeeForm);
 
+    /**
+     * 社員データを基に論理削除を行います。
+     * @param employee 社員データ
+     * @return 更新後の社員データ
+     */
+    Employee logicalDeleteByEmployee(Employee employee);
+
+    /**
+     * 社員データを基に論理削除からの復元を行います。
+     * @param Employee 社員データ
+     * @return 更新後の社員データ
+     */
+    Employee restoreEmployee(Employee employee);
+
+    
+    /**
+     * 退職者リストを検索します。
+     * @param empno 社員番号
+     * @return 退職者リスト
+     */
+	List<Employee> findRetiredEmployees();
 }

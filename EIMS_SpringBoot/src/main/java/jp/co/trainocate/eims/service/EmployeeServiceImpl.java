@@ -102,4 +102,37 @@ public class EmployeeServiceImpl implements EmployeeService {
 		e.setDeptno(f.getDeptno()); // 外部キー列を設定（departmentは不要）
 		return employeeRepository.save(e);
 	}
+	
+	  /**
+     * 社員データを基に論理削除を行います。
+     * @param employeeForm 社員データ
+     * @return 更新後の社員データ
+     */
+	@Override
+	public Employee logicalDeleteByEmployee(Employee e) {
+		//論理削除フラグを、1に変更
+		e.setDeleteFlg(1);
+		return employeeRepository.save(e);
+	}
+
+	 /**
+     * 論理削除フラグが1の社員(退職者)リストを返します
+     * @return 退職者リスト
+     */
+	@Override
+	public List<Employee> findRetiredEmployees() {
+		return employeeRepository.findByDeleteFlg(1);
+	}
+
+	/**
+     * 指定した退職者の社員番号の従業員を復元します。
+     * @param empno 復元対象の社員番号
+     */
+	@Override
+	public Employee restoreEmployee(Employee e) {
+		//論理削除フラグを、0に変更
+				e.setDeleteFlg(0);
+				return employeeRepository.save(e);
+		
+	}
 }

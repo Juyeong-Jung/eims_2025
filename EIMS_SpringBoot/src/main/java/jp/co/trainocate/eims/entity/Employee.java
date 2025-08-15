@@ -57,6 +57,9 @@ public class Employee {
 	@Column(name = "deptno")
 	private Integer deptno;
 
+	@Column(name = "delete_flg")
+	private Integer deleteFlg;
+	
 	// ★追加：全主要フィールドを同時設定するコンストラクタ。departmentを初期化するパターン
 	public Employee(Integer empno, String lname, String fname, String lkana, String fkana,
 			String password, Integer gender, Department department) {

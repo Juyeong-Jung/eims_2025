@@ -37,8 +37,8 @@
       <button type="submit" class="btn btn-primary mb-2">検索</button>
     </form>
   </div>
-
-  <!-- 部署名検索 -->
+  
+  <!--部署名検索-->
   <div class="mb-4">
     <h4 class="h6">部署名検索</h4>
     <form th:action="@{/selectByDeptNo}" method="get" class="form-inline">
@@ -53,7 +53,10 @@
       <button type="submit" class="btn btn-primary mb-2">検索</button>
     </form>
   </div>
-
+<div class="mb-4">
+  <h4 class="h6">退職者閲覧</h4>
+  <a th:href="@{/retired}" class="btn btn-danger">退職者一覧を表示</a>
+</div>
   <div class="mb-3">
     <a th:href="@{/}" class="btn btn-secondary">トップページに戻る</a>
   </div>
