@@ -50,4 +50,7 @@ public class EmployeeForm {
     
   //【オプション機能 管理者追加】
     private Integer role;
+    
+  //【オプション機能 論理削除】
+    private Integer deleteFlg;
 }

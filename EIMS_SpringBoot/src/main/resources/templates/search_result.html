@@ -18,21 +18,21 @@
             <a th:href="@{/search}" class="btn btn-success">検索画面に戻る</a>
             <a th:href="@{/}" class="btn btn-secondary">トップページに戻る</a>
         </div>
-       
+
         <div th:if="${employees.size() > 0}">
             <!-- 件数を表示 -->
             <h2 th:text="'検索件数：' + ${employees.size()} + '件'"></h2>
             <!--テーブルが横長いので、PC画面では、半分にし、タブレット以下は、フル表示 -->
             <div>
                 <table class="table table-bordered">
-                    
+
                     <thead class="text-center">
                         <tr>
                             <th>顔写真</th>
                             <th>社員番号</th>
                             <th>氏名（フリガナ）</th>
                             <th>部署名</th>
-                            <th th:if = "${session.user.role == 1}">操作</th>
+                            <th th:if="${session.user.role == 1}">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,28 +40,30 @@
                         <tr th:each="employee : ${employees}">
                             <td class="text-center align-middle"><img th:attr="src=@{/images/} + ${employee.empno} + @{.png}, 
 alt=${employee.lname} + ' ' + ${employee.fname}, width=60, height=70"> </td>
-                            <td th:text="${employee.empno}" class = "align-middle"></td>
-                            <td class = "align-middle">
-                                <span th:text="${employee.lname} + ' ' + ${employee.fname}"></span>
-                                <span th:text="'（' + ${employee.lkana} + ' ' + ${employee.fkana} + '）'"></span>
+                            <td th:text="${employee.empno}" class="align-middle "></td>
+                            <td class="align-middle">
+                                <a th:href="@{/detail/}+ ${employee.empno}" class="text-decoration-none">
+                                    <span th:text="${employee.lname} + ' ' + ${employee.fname}"></span>
+                                    <span th:text="'（' + ${employee.lkana} + ' ' + ${employee.fkana} + '）'"></span>
+                                </a>
                             </td>
-                            <td th:text="${employee.department.deptname}" class = "align-middle"></td>
-                            <td th:if = "${session.user.role == 1}" class="text-center align-middle">
-								<a th:href = "@{/changeInput/}+ ${employee.empno}" class="btn btn-primary">
-								変更</a>
-								<a th:href = "@{/deleteConfirm/}+ ${employee.empno}" class="btn btn-danger">
-								削除</a>
+                            <td th:text="${employee.department.deptname}" class="align-middle"></td>
+                            <td th:if="${session.user.role == 1}" class="text-center align-middle">
+                                <a th:href="@{/changeInput/}+ ${employee.empno}" class="btn btn-primary">
+                                    変更</a>
+                                <a th:href="@{/deleteConfirm/}+ ${employee.empno}" class="btn btn-danger">
+                                    削除</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        
+
         <div th:if="${employees.size() == 0}">
             <h2>該当する社員は存在しませんでした。</h2>
         </div>
-       
+
         <div class="button-group mb-3">
             <a th:href="@{/search}" class="btn btn-success">検索画面に戻る</a>
             <a th:href="@{/}" class="btn btn-secondary">トップページに戻る</a>

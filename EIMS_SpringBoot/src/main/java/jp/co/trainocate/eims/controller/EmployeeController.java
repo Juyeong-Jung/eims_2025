@@ -40,14 +40,32 @@ public class EmployeeController {
 		return "index";
 	}
 
+	// 社員詳細の表示
+	@GetMapping("/detail/{empno}")
+	public String showEmployeeDetail(@PathVariable("empno") Integer empno, Model model) {
+	    Employee employee = employeeService.findByEmployee(empno);
+	    if (employee == null) {
+	        // 存在しない場合は検索へ
+	        return "redirect:/search";
+	    }
+	    model.addAttribute("employee", employee);
+	    return "detail";
+	}
+	
 	/** 検索画面を表示する */
 	@GetMapping("/search")
-	public String showSearchPage(Model model) {
+	public String showSearchPage(Model model, HttpSession session) {
+		if (session.getAttribute("user") == null) {
+	        // 未ログイン：トップへ（=登録はサイドバーから可能）
+	        return "redirect:/login";
+	    }
+		
 		// プルダウンに部署一覧を表示するため、事前に全件取得して Model にセット
 		model.addAttribute("departments", departmentService.findAll());
 		return "search";
 	}
 
+	
 	/** 社員番号で検索 */
 	@GetMapping("/selectByEmpNo")
 	public String selectByEmpNo(Integer empno, Model model) {
@@ -67,11 +85,15 @@ public class EmployeeController {
 	/** 氏名で検索 */
 	@GetMapping("/selectByEmpName")
 	public String selectByEmpName(String keyword, Model model) {
-		// キーワードで部分一致検索を行う
-		List<Employee> employees = employeeService.findByEmpName(keyword);
-		// 検索結果を画面表示用にセット
-		model.addAttribute("employees", employees);
-		return "search_result";
+		if (keyword.length() != 0) {
+			// キーワードで部分一致検索を行う
+			List<Employee> employees = employeeService.findByEmpName(keyword);
+			// 検索結果を画面表示用にセット
+			model.addAttribute("employees", employees);
+			return "search_result";
+		}
+		
+		return "search";
 	}
 
 	/** 部署番号で検索 */

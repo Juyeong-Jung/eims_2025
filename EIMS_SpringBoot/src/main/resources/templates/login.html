@@ -28,33 +28,38 @@
 
                     <!-- 必要に応じて表示するアラート（見た目用のサンプル） -->
                     <!-- <div class="alert alert-info" role="alert">タイムアウトしました。再度ログインしてください。</div> -->
-                    
-                    <div th:if = "${loginError}" class="alert alert-danger" role="alert">社員番号またはパスワードが正しくありません。</div>
+
+                    <div th:if="${loginError}" class="alert alert-danger" role="alert">社員番号またはパスワードが正しくありません。</div>
                     <!-- <div class="alert alert-success" role="alert">ログアウトしました。</div> -->
 
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h2 class="h5 mb-4 text-center">ログイン</h2>
 
-                            <form th:action="@{/login}" method="post" th:object = "${loginForm}">
+                            <form th:action="@{/login}" method="post" th:object="${loginForm}">
                                 <!-- 社員番号 -->
                                 <div class="mb-3">
                                     <label for="empno" class="form-label">社員番号</label>
-                                    <input type="text" class="form-control" th:field = "*{empno}"
-                                        placeholder="例）10001" th:classappend="${#fields.hasErrors('empno')} ? ' is-invalid'">
-                                    <div class="invalid-feedback" th:errors = "*{empno}"></div>
-                                </div> <!--Bootstrapでは、th:classappendの後ろの属性を、上記のように書いて、その下に、invalid-feedbackを追加すると、きれいなエラーメッセージを表示してくれます。 -->
+                                    <input type="text" class="form-control" th:field="*{empno}" placeholder="例）10001"
+                                        th:classappend="${#fields.hasErrors('empno')} ? ' is-invalid'">
+                                    <div class="invalid-feedback" th:errors="*{empno}"></div>
+                                </div>
+                                <!--Bootstrapでは、th:classappendの後ろの属性を、上記のように書いて、その下に、invalid-feedbackを追加すると、きれいなエラーメッセージを表示してくれます。 -->
 
                                 <!-- パスワード -->
                                 <div class="mb-4">
                                     <label for="password" class="form-label">パスワード</label>
-                                    <input type="password" th:field = "*{password}" class="form-control"
-                                        placeholder="8文字以上" th:classappend="${#fields.hasErrors('password')} ? ' is-invalid'">
-                                    <div class="invalid-feedback" th:errors = "*{password}"></div>
+                                    <input type="password" th:field="*{password}" class="form-control"
+                                        placeholder="8文字以上"
+                                        th:classappend="${#fields.hasErrors('password')} ? ' is-invalid'">
+                                    <div class="invalid-feedback" th:errors="*{password}"></div>
                                 </div>
 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary">ログイン</button>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a th:href="@{/input}" class="btn btn-outline-success">会員登録（新規）</a>
                                 </div>
                             </form>
                         </div>
@@ -64,7 +69,7 @@
         </div>
     </main>
 
-        <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 
 </html>

@@ -57,13 +57,14 @@ public class Employee {
 	@Column(name = "deptno")
 	private Integer deptno;
 
-	
 	//【オプション機能 管理者追加】
 	@Column(name = "role")
 	private Integer role;
-	
-	
-	
+
+	//【オプション機能 管理者追加】
+	@Column(name = "delete_flg")
+	private Integer deleteFlg;
+
 	// ★追加：全主要フィールドを同時設定するコンストラクタ。departmentを初期化するパターン
 	public Employee(Integer empno, String lname, String fname, String lkana, String fkana,
 			String password, Integer gender, Department department) {
@@ -92,8 +93,6 @@ public class Employee {
 		this.deptno = deptno;
 	}
 
-	
-		
 	// ★JPA用のデフォルトコンストラクタ（必須）
 	public Employee() {
 	}
